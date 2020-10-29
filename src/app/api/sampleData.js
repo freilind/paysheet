@@ -52,7 +52,7 @@ export const sampleData = [
         "id": '2',
         "cedula": 15234987,
         "firstName": 'ana maria',
-        "LastName": 'angulo mejias',
+        "lastName": 'angulo mejias',
         "classroom": '1A',
         "payments": [{
             "month": "september",

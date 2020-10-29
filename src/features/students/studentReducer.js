@@ -1,7 +1,8 @@
-import { FETCH_STUDENTS } from './studentConstants';
+import { FETCH_STUDENTS, GET_STUDENT } from './studentConstants';
 
 const initialState = {
-    students: []
+    students: [],
+    student: null
 }
 
 const studentReducer = (state = initialState, {type, payload}) => {
@@ -10,6 +11,11 @@ const studentReducer = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 students: payload
+            }
+        case GET_STUDENT:
+            return {
+                ...state,
+                student: payload
             }
         default: 
             return state;

@@ -10,9 +10,8 @@ const NavBar = ({setFormOpen}) => {
     return(
         <Menu inverted fixed='top'>
             <Container>
-                <Menu.Item as={NavLink} to='/' header>
-                    <img src='/assets/logo.png' alt='logo' style={{marginRight:'15px'}}/>
-                    N&oacute;mina
+                <Menu.Item header>
+                    <img src='/assets/images/logo.png' alt='logo' style={{marginRight:'15px'}}/>
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/dashboard'  name='Dashboard' />
                 {authenticated 

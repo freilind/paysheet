@@ -1,5 +1,5 @@
-
 import firebase from '../config/firebase';
+import {getKeyDate} from '../common/util/util';
 
 const db = firebase.firestore();
 
@@ -20,7 +20,7 @@ export const dataFromSnapshot = (snapshot) => {
 };
 
 export const listenToStudentsFromFirestore = (classroom) => {
-    return db.collection('students').orderBy('lastName'); //.where('classroom', '==', classroom)
+    return db.collection('students').where('classroom', '==', classroom);
 };
 
 export const listenToStudentFromFirestore = (eventId) => {
@@ -28,9 +28,14 @@ export const listenToStudentFromFirestore = (eventId) => {
 };
 
 export const addExchange = (exchange) => {
-    return db.collection('exchange').add({
+    const keyDate = getKeyDate(exchange.date);
+    return db.collection('exchange').doc(keyDate).set({
         ...exchange
-        })
+    })
+};
+
+export const updateExchange =  async (id, exchange) => {
+    return await db.collection('exchange').doc(id).update(exchange);
 };
 
 export const setUserProfile = (user) => {
@@ -58,4 +63,9 @@ export const updateUserProfile = async (profile) => {
     } catch(error) {
         throw error;
     }
+}
+
+
+export const getStudent = (studentId) => {
+    return db.collection('students').doc(studentId);
 }

@@ -24,7 +24,7 @@ const SignedInMenu = () => {
         <>
             <Menu.Item position='right'>
                 <Button onClick={()=> dispatch(openModal({modalType: 'RegisterExchange'}))} basic inverted content='Tasa' />
-             </Menu.Item>
+            </Menu.Item>
             <Menu.Item position='right'>
                 <Image avatar spaced='right' src={'/assets/images/user.png'} />
                 <Dropdown pointing='top left' text={currentUserProfile?.displayName}>

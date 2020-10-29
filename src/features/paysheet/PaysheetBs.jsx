@@ -3,7 +3,7 @@ import cuid from 'cuid';
 import { Table } from 'semantic-ui-react';
 import {getMonthName, months, monthsTitle} from '../../app/common/constants';
 
-const PaysheetBs = ({students, history, match}) => {
+const PaysheetBs = ({students}) => {
     const styleMoroso = {'backgroundColor' : '#F8D8DF'};
     const styleSolvente = {'backgroundColor' : '#D3F8D7'};
     const regexMiles = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
@@ -25,7 +25,7 @@ const PaysheetBs = ({students, history, match}) => {
         totMonths = totMonths.map(obj => updateMonth.find(o => o.month === obj.month) || obj);
     }
 
-    students.map(student => months.map(m =>extraxtSum(student, m.month)));
+    students.sort((a, b) => a.lastName >= b.lastName).map(student => months.map(m =>extraxtSum(student, m.month)));
     const acc = months.slice(0, size).map(extractorCuote).reduce(reducer,0);
 
     return(
@@ -45,8 +45,8 @@ const PaysheetBs = ({students, history, match}) => {
                         const accStudent = student.payments.map(extractorDollar).reduce(reducer,0);
                         return (
                             <Table.Row key={student.cedula}>
-                                <Table.Cell singleLine>
-                                    {student.cedula.toString().replace(regexMiles, '.')}
+                                <Table.Cell singleLine >
+                                    <a href={`/studets/${student.id}`}>{student.cedula.toString().replace(regexMiles, '.')}</a>
                                 </Table.Cell>
                                 <Table.Cell style={{textTransform: 'capitalize'}} singleLine>{student.lastName +', '+ student.firstName}</Table.Cell>
                                 <Table.Cell  style={accStudent < acc ? styleMoroso : styleSolvente}>

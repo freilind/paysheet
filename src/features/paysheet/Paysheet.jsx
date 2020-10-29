@@ -8,7 +8,7 @@ import { listenToStudents } from '../students/studentActions';
 import { listenToStudentsFromFirestore } from '../../app/services/firestoreService';
 import LoadingComponent from '../../app/layout/LoadingComponent';
 
-const Paysheet = ({history, match}) => {
+const Paysheet = ({match}) => {
     const dispatch = useDispatch();
     const {students} = useSelector(state => state.student);
     const {loading} = useSelector(state => state.async);
@@ -16,7 +16,7 @@ const Paysheet = ({history, match}) => {
     useFirestoreCollection({
         query: () => listenToStudentsFromFirestore(match.params.id),
         data: students => dispatch(listenToStudents(students)),
-        dependency: [dispatch]
+        dependency: [match.params.id, dispatch]
     });
 
     const paysheets = [

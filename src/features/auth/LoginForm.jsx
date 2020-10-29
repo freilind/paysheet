@@ -7,9 +7,11 @@ import MyTextInput from '../../app/common/form/MyTextInput';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../app/common/modals/modalReducer';
 import { signInWithEmail } from '../../app/services/firebaseService';
+import { useHistory } from 'react-router-dom';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     return (
         <Modalwrapper size='mini' header='Login Nomina'>
             <Formik
@@ -24,6 +26,7 @@ const LoginForm = () => {
                         await signInWithEmail(values);
                         setSubmitting(false);
                         dispatch(closeModal());
+                        history.push('/dashboard');
                     } catch(error) {
                         setErrors({auth: 'Problem with username or password'});
                         setSubmitting(false);

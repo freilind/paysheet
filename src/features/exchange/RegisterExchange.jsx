@@ -1,23 +1,24 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Label } from 'semantic-ui-react';
 import MyTextInput from '../../app/common/form/MyTextInput';
 import Modalwrapper from '../../app/common/modals/ModalWrapper';
-import MyDateInput from '../../app/common/form/MyDateInput';
 import { addExchange } from '../../app/services/firestoreService';
 import { closeModal } from '../../app/common/modals/modalReducer';
 import { Formik, Form } from 'formik';
+import MyDateInput from '../../app/common/form/MyDateInput';
 
 const RegisterExchange = () => {
     const dispatch = useDispatch();
+
     return (
         <Modalwrapper size='mini' header='Registrar tasa de cambio'>
             <Formik
                 initialValues={{buy: 0 , sale: 0, date: new Date()}}
                 validationSchema={Yup.object({
-                    buy: Yup.number().moreThan(300000).required(),
-                    sale: Yup.number().moreThan(300000).required(),
+                    buy: Yup.number().moreThan(10).required(),
+                    sale: Yup.number().moreThan(10).required(),
                     date: Yup.date().required()
                 })}
                 
@@ -39,8 +40,7 @@ const RegisterExchange = () => {
                         <MyDateInput 
                             name='date'
                             placeholder_Text='Date'
-                            showTimeSelect
-                            dateFormat='MMMM d, yyyy'
+                            dateFormat='d MMMM, yyyy'
                         />
                         {errors.auth && 
                             <Label 

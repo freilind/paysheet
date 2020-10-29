@@ -10,6 +10,7 @@ import NavBar from '../../features/nav/NavBar';
 import Paysheet from '../../features/paysheet/Paysheet';
 import { useSelector } from 'react-redux';
 import LoadingComponent from './LoadingComponent';
+import Student from '../../features/students/Student';
 
 function App() {
   const {initialized} = useSelector((state)=> state.async);
@@ -27,6 +28,7 @@ function App() {
           <Container className='main'>
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path='/paysheet/:id' component={Paysheet} />
+            <Route exact path='/students/:id' component={Student} />
           </Container>
         </>
       )} />

@@ -1,0 +1,1 @@
+export const FETCH_EXCHANGE_DAY = 'FETCH_EXCHANGE_DAY';
