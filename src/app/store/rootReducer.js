@@ -5,6 +5,7 @@ import authReducer from '../../features/auth/authReducer';
 import profileReducer from '../../features/profiles/profileReducer';
 import studentReducer from '../../features/students/studentReducer';
 import exchangeReducer from '../../features/exchange/exchangeReducer';
+import paymentReducer from '../../features/payment/paymentReducer';
 
 const rootReducer = combineReducers({
     modals: modalReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     exchange: exchangeReducer,
     auth: authReducer,
     async: asyncReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    payment: paymentReducer
 });
 
 export default rootReducer;

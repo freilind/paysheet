@@ -1,12 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Header, Item, List, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Item, List, Segment } from 'semantic-ui-react';
 import useFirestoreDoc from '../../app/hooks/useFirestoreDoc';
 import LoadingComponent from '../../app/layout/LoadingComponent';
 import { getStudent } from '../../app/services/firestoreService';
 import PaysheetStudent from '../paysheet/PaysheetStudent';
 import {listenStudent} from './studentActions';
 import {format} from 'date-fns';
+import { openModal } from '../../app/common/modals/modalReducer';
 
 const Student = ({match}) => {
     const regexMiles = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
@@ -26,7 +27,7 @@ const Student = ({match}) => {
         <>
             <Segment>
                 <Grid>
-                    <Grid.Column width={12}>
+                    <Grid.Column width={8}>
                         <Item.Group>
                             <Item>
                                 <Item.Image avatar size='small' src={'/assets/images/user.png'} />
@@ -39,6 +40,13 @@ const Student = ({match}) => {
                             </Item>
                         </Item.Group>
                     </Grid.Column>
+                    <Grid.Column style={{display: 'flex', 'alignSelf': 'center'}} width={4}>
+                        <Button
+                        onClick={()=> dispatch(openModal({modalType: 'Payment'}))} 
+                        primary
+                        size='large'
+                        fluid content='Pagar' />
+                    </Grid.Column>
                 </Grid>
                 
             </Segment>
@@ -49,7 +57,7 @@ const Student = ({match}) => {
                         <h2>{m.month}</h2>
                         <List key={m} divided relaxed>
                             {m.transactions?.reverse().map(t => (
-                                <List.Item>
+                                <List.Item key={t.date}>
                                 <List.Icon name='dollar' size='large' verticalAlign='middle' />
                                 <List.Content>
                                     <List.Description as='a'>

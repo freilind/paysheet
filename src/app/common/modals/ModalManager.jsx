@@ -2,11 +2,13 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import LoginForm from '../../../features/auth/LoginForm';
 import RegisterExchange from '../../../features/exchange/RegisterExchange';
+import Payment from '../../../features/payment/Payment';
 
 const ModalManager = () => {
     const modalLookup = {
         RegisterExchange,
-        LoginForm
+        LoginForm,
+        Payment
     };
     const currentModal = useSelector(state => state.modals);
     let renderedModal;
