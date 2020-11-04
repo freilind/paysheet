@@ -35,6 +35,11 @@ export const addExchange = (exchange) => {
     })
 };
 
+export const getExchange = (date) => {
+    const keyDate = getKeyDate(date);
+    return db.collection('exchange').doc(keyDate);
+};
+
 export const updateExchange =  async (id, exchange) => {
     return await db.collection('exchange').doc(id).update(exchange);
 };
@@ -66,37 +71,20 @@ export const updateUserProfile = async (profile) => {
     }
 }
 
-
 export const getStudent = (studentId) => {
     return db.collection('students').doc(studentId);
 }
 
-export const addPayment = async (studentId, payment) => {
-    const objUpdate = {};
-    console.log(payment);
-    const keyDate = getKeyDate(payment.date);
-    const exc = db.collection('exchange').doc(keyDate);
-    let data1;
-    exc.onSnapshot(snapshot=> {
-        data1 = snapshot.data();
-        console.log(data1);
-    });
-    objUpdate = {
-        rate: data1.sale,
+export const addPayment = async (student, payment, rate) => {
+    return db.collection('payments').add({
+        studentId: student.id,
+        classroom: student.classroom,
         date: payment.date,
-        mount: payment.mount
-    }
+        mount: payment.mount,
+        rate: rate
+    })
+};
 
-    const month = monthNames[payment.date.getMonth()];
-    const ref = db.collection('students').doc(studentId);
-    let data;
-    ref.onSnapshot(snapshot=> {
-        data = snapshot.data();
-        const m =data.payments.filter(m => m.month === month);
-        m[0].transactions.push(objUpdate);
-    });
-
-    /*return db.collection('students').doc(studentId).set({
-        ...data
-    })*/
+export const getPaymentClassroom = (classroom) => {
+    return db.collection('payments').where('classroom', '==', classroom);
 };

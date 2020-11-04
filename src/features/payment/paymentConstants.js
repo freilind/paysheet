@@ -1,1 +1,2 @@
 export const MAKE_PAYMENT = 'MAKE_PAYMENT';
+export const LISTEN_PAYMENTS = 'LISTEN_PAYMENTS';

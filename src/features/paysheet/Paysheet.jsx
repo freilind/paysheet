@@ -5,17 +5,25 @@ import { Tab } from 'semantic-ui-react';
 import PaysheetBs from './PaysheetBs';
 import PaysheetUs from './PaysheetUs';
 import { listenToStudents } from '../students/studentActions';
-import { listenToStudentsFromFirestore } from '../../app/services/firestoreService';
+import { getPaymentClassroom, listenToStudentsFromFirestore } from '../../app/services/firestoreService';
 import LoadingComponent from '../../app/layout/LoadingComponent';
+import { listenToPayments } from '../payment/paymentActions';
 
 const Paysheet = ({match}) => {
     const dispatch = useDispatch();
     const {students} = useSelector(state => state.student);
+    const {payments} = useSelector(state => state.payment);
     const {loading} = useSelector(state => state.async);
 
     useFirestoreCollection({
         query: () => listenToStudentsFromFirestore(match.params.id),
         data: students => dispatch(listenToStudents(students)),
+        dependency: [match.params.id, dispatch]
+    });
+
+    useFirestoreCollection({
+        query: () => getPaymentClassroom(match.params.id),
+        data: payments => dispatch(listenToPayments(payments)),
         dependency: [match.params.id, dispatch]
     });
 

@@ -15,7 +15,7 @@ import Student from '../../features/students/Student';
 function App() {
   const {initialized} = useSelector((state)=> state.async);
 
-  //if(!initialized) return <LoadingComponent content='Cargando app ...' />
+  if(!initialized) return <LoadingComponent content='Cargando app ...' />
 
   return (
     <>

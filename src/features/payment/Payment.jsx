@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Container, Divider, Icon, Input, Label } from 'semantic-ui-react';
+import { toast } from 'react-toastify';
 import MyTextInput from '../../app/common/form/MyTextInput';
 import Modalwrapper from '../../app/common/modals/ModalWrapper';
-import { addPayment } from '../../app/services/firestoreService';
+import { addPayment, getExchange } from '../../app/services/firestoreService';
 import { closeModal } from '../../app/common/modals/modalReducer';
 import { Formik, Form } from 'formik';
 import MyDateInput from '../../app/common/form/MyDateInput';
+import { getDocFirebase } from '../../app/common/util/util';
 
 const Payment = () => {
     const dispatch = useDispatch();
@@ -26,10 +28,19 @@ const Payment = () => {
                 
                 onSubmit={async (values, {setSubmitting, setErrors}) => {
                     try {
-                        await addPayment(student.id, values);
-                        dispatch(closeModal());
+                        const rate = await getDocFirebase(getExchange(values.date));
+                        if(rate && rate.sale) {
+                            await addPayment(student, values, rate.sale);
+                            toast.done('Pago registrado.');
+                            dispatch(closeModal());
+                            
+                        } else {
+                            toast.error('No hay tasa registrada para la fecha seleccionada.');
+                        }
+                        
                     } catch(error) {
-                        setErrors({auth: 'Problemas con el registro del pago.'});
+                        setErrors({payment: 'Problemas con el registro del pago.'});
+                        toast.error('Problemas con el registro del pago.');
                         setSubmitting(false);
                     } finally {
                         setSubmitting(false);
