@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import * as Yup from 'yup';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Container, Divider, Icon, Input, Label } from 'semantic-ui-react';
+import { Button, Label } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import MyTextInput from '../../app/common/form/MyTextInput';
 import Modalwrapper from '../../app/common/modals/ModalWrapper';
@@ -13,48 +12,41 @@ import { getDocFirebase } from '../../app/common/util/util';
 
 const Payment = () => {
     const dispatch = useDispatch();
-    const [toggle, setToggle] = useState(false);
-    const {student} = useSelector(state => state.student); 
-    const handleToggleClick = () => setToggle((prevState) => (!prevState))
+    const {student} = useSelector(state => state.student);
 
     return (
         <Modalwrapper size='mini' header='Registrar Pago' >
             <Formik
                 initialValues={{mount: 0 , date: new Date()}}
-                validationSchema={Yup.object({
-                    mount: Yup.number().moreThan(0, 'Pago tiene que ser mayor de Cero').required('Pago es requerido.'),
-                    date: Yup.date().required()
-                })}
-                
                 onSubmit={async (values, {setSubmitting, setErrors}) => {
                     try {
                         const rate = await getDocFirebase(getExchange(values.date));
                         if(rate && rate.sale) {
+                            if(values.mount > 200) {
+                                values.mount = (values.mount / rate.sale).toFixed(2);
+                            }
                             await addPayment(student, values, rate.sale);
                             toast.done('Pago registrado.');
                             dispatch(closeModal());
-                            
                         } else {
                             toast.error('No hay tasa registrada para la fecha seleccionada.');
                         }
-                        
                     } catch(error) {
                         setErrors({payment: 'Problemas con el registro del pago.'});
                         toast.error('Problemas con el registro del pago.');
-                        setSubmitting(false);
                     } finally {
                         setSubmitting(false);
                     }
                 }}
             >
                 {({isSubmitting, isValid, dirty, errors}) => (
-                    <Form className='ui form' >
-                        <Button style={{'marginBottom': '4px'}} toggle active={toggle} onClick={handleToggleClick}>
-                            {toggle ? 'Dollar' : 'Bolivares' }
-                        </Button>
-                        <MyTextInput name='mount' placeholder='Cantidad...' required />
                     
-                        <MyDateInput 
+                    <Form className='ui form'>
+                        Si el monto es inferior a (200) se considera $, en caso contrario Bs 
+                        y se hara la conversi&oacute;n a $ seg&uacute;n la tasa del d&iacute;a seleccionado.
+                        <MyTextInput label='Pago' name='mount' type='number' min='1' step="0.01" placeholder='Cantidad...' required />
+                        <MyDateInput
+                            label='Fecha'
                             name='date'
                             placeholder_Text='Date'
                             dateFormat='d MMMM, yyyy'

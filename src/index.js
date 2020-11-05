@@ -6,8 +6,9 @@ import 'semantic-ui-css/semantic.min.css';
 import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux';
-import configureStore from './app/store/configureStore';
+import {configureStore, history} from './app/store/configureStore';
 import { BrowserRouter } from 'react-router-dom';
+import {ConnectedRouter} from 'connected-react-router';
 
 const store = configureStore();
 const rootEl = document.getElementById('root');
@@ -15,9 +16,9 @@ const rootEl = document.getElementById('root');
 function render(){
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ConnectedRouter history={history}>
+          <App />
+      </ConnectedRouter>
     </Provider>,
     rootEl
   );

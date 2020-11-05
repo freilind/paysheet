@@ -9,8 +9,10 @@ import Dashboard from '../../features/dashboard/Dashboard';
 import NavBar from '../../features/nav/NavBar';
 import Paysheet from '../../features/paysheet/Paysheet';
 import { useSelector } from 'react-redux';
+import ErrorComponent from '../common/errors/ErrorComponent';
 import LoadingComponent from './LoadingComponent';
 import Student from '../../features/students/Student';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
   const {initialized} = useSelector((state)=> state.async);
@@ -26,9 +28,10 @@ function App() {
         <>
           <NavBar />
           <Container className='main'>
-            <Route exact path='/dashboard' component={Dashboard} />
-            <Route exact path='/paysheet/:id' component={Paysheet} />
-            <Route exact path='/students/:id' component={Student} />
+            <PrivateRoute exact path='/dashboard' component={Dashboard} />
+            <PrivateRoute exact path='/paysheet/:id' component={Paysheet} />
+            <PrivateRoute exact path='/students/:id' component={Student} />
+            <Route path='/error' component={ErrorComponent}/>
           </Container>
         </>
       )} />

@@ -6,8 +6,10 @@ import profileReducer from '../../features/profiles/profileReducer';
 import studentReducer from '../../features/students/studentReducer';
 import exchangeReducer from '../../features/exchange/exchangeReducer';
 import paymentReducer from '../../features/payment/paymentReducer';
+import {connectRouter} from 'connected-react-router';
 
-const rootReducer = combineReducers({
+const rootReducer= (history) => combineReducers({
+    router: connectRouter(history),
     modals: modalReducer,
     student: studentReducer,
     exchange: exchangeReducer,

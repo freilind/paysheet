@@ -84,11 +84,15 @@ const PaysheetUs = ({students}) => {
                                     totalStudent += paysStudent[m.month];
                                     return (
                                         <Table.Cell key={m.month} style={paysStudent[m.month] < m.cuote ? styleMoroso : styleSolvente}>
-                                            {paysStudent[m.month]}
+                                            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BSF' })
+                                                .format(paysStudent[m.month]).replace('BSF', '')}
                                         </Table.Cell>
                                     );
                                 })}
-                                <Table.Cell>{totalStudent}</Table.Cell>
+                                <Table.Cell>
+                                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BSF' })
+                                                .format(totalStudent).replace('BSF', '')}
+                                </Table.Cell>
                             </Table.Row>
                         );
                     })}
@@ -103,11 +107,15 @@ const PaysheetUs = ({students}) => {
                             totalClassroom += totalMonths[m.month]
                             return(
                                 <Table.HeaderCell key={cuid()}>
-                                    {totalMonths[m.month]}
+                                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BSF' })
+                                                .format(totalMonths[m.month]).replace('BSF', '')}
                                 </Table.HeaderCell>
                             );
                         })}
-                        <Table.HeaderCell>{totalClassroom}</Table.HeaderCell>
+                        <Table.HeaderCell>
+                            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BSF' })
+                                                .format(totalClassroom).replace('BSF', '')}
+                        </Table.HeaderCell>
                     </Table.Row>
                 </Table.Footer>
             </Table>

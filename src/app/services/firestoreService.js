@@ -1,6 +1,5 @@
 import firebase from '../config/firebase';
 import {getKeyDate} from '../common/util/util';
-import { monthNames } from '../common/constants';
 
 const db = firebase.firestore();
 

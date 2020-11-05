@@ -1,6 +1,5 @@
 import React from 'react';
-import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Label } from 'semantic-ui-react';
 import MyTextInput from '../../app/common/form/MyTextInput';
 import Modalwrapper from '../../app/common/modals/ModalWrapper';
@@ -8,6 +7,7 @@ import { addExchange } from '../../app/services/firestoreService';
 import { closeModal } from '../../app/common/modals/modalReducer';
 import { Formik, Form } from 'formik';
 import MyDateInput from '../../app/common/form/MyDateInput';
+import { toast } from 'react-toastify';
 
 const RegisterExchange = () => {
     const dispatch = useDispatch();
@@ -16,28 +16,25 @@ const RegisterExchange = () => {
         <Modalwrapper size='mini' header='Registrar tasa de cambio'>
             <Formik
                 initialValues={{buy: 0 , sale: 0, date: new Date()}}
-                validationSchema={Yup.object({
-                    buy: Yup.number().moreThan(10).required(),
-                    sale: Yup.number().moreThan(10).required(),
-                    date: Yup.date().required()
-                })}
-                
                 onSubmit={async (values, {setSubmitting, setErrors}) => {
                     try {
                         await addExchange(values);
-                        setSubmitting(false);
+                        toast.done('Tasa registrada.');
                         dispatch(closeModal());
                     } catch(error) {
                         setErrors({auth: 'Problem with rate exchange'});
+                        toast.error('Problemas con el registro de la tasa.');
+                    }finally {
                         setSubmitting(false);
                     }
                 }}
             >
                 {({isSubmitting, isValid, dirty, errors}) => (
                     <Form className='ui form' >
-                        <MyTextInput name='buy' placeholder='Valor compra' />
-                        <MyTextInput name='sale' placeholder='Valor venta' />
-                        <MyDateInput 
+                        <MyTextInput label='Compra' name='buy' type='number' min='1' step="0.01" placeholder='Valor compra' required />
+                        <MyTextInput label='Venta' name='sale' type='number' min='1' step="0.01" placeholder='Valor venta' required />
+                        <MyDateInput
+                            label='Fecha'
                             name='date'
                             placeholder_Text='Date'
                             dateFormat='d MMMM, yyyy'
