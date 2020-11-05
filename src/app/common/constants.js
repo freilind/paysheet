@@ -1,5 +1,5 @@
 export const monthsCuote = [
-    {'month': 'september', 'cuote': 15}, {'month': 'october', 'cuote': 25}, {'month': 'november', 'cuote': 15}, {'month': 'december', 'cuote': 15}, 
+    {'month': 'september', 'cuote': 20}, {'month': 'october', 'cuote': 25}, {'month': 'november', 'cuote': 15}, {'month': 'december', 'cuote': 15}, 
     {'month': 'january', 'cuote': 15}, {'month': 'february', 'cuote': 15}, {'month': 'march', 'cuote': 15}, {'month': 'april', 'cuote': 15}, 
     {'month': 'may', 'cuote': 15}, {'month': 'june', 'cuote': 15}, {'month': 'july', 'cuote': 15}, {'month': 'august', 'cuote': 15}
 ];

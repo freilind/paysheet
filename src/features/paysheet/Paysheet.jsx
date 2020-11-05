@@ -12,7 +12,6 @@ import { listenToPayments } from '../payment/paymentActions';
 const Paysheet = ({match}) => {
     const dispatch = useDispatch();
     const {students} = useSelector(state => state.student);
-    const {payments} = useSelector(state => state.payment);
     const {loading} = useSelector(state => state.async);
 
     useFirestoreCollection({

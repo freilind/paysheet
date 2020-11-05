@@ -5,7 +5,10 @@ import { Table } from 'semantic-ui-react';
 import {getMonthName, monthsCuote, monthsTitle} from '../../app/common/constants';
 
 const PaysheetUs = ({students}) => {
-    const {payments} = useSelector(state => state.payment);
+    let pays;
+    const {payments, paymentsStudent} = useSelector(state => state.payment);
+    students.length === 1 ? pays = paymentsStudent : pays = payments
+   // const {payments} = useSelector(state => state.payment);
     const styleMoroso = {'backgroundColor' : '#F8D8DF'};
     const styleSolvente = {'backgroundColor' : '#D3F8D7'};
     const regexMiles = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
@@ -20,7 +23,7 @@ const PaysheetUs = ({students}) => {
     const calcPayments = (student) => {
         let totalStudentMonths = {};
         monthsCuote.forEach(m => (totalStudentMonths = {...totalStudentMonths,[m.month]: 0}));
-        const payInd = payments.filter(p => p.studentId === student.id).sort((a, b) => a.date <= b.date);
+        const payInd = pays.filter(p => p.studentId === student.id).sort((a, b) => a.date <= b.date);
         payInd.forEach(p => {
             let feePay = parseFloat(p.mount);
             monthsCuote.some(m => {

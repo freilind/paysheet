@@ -1,4 +1,4 @@
-import {MAKE_PAYMENT, LISTEN_PAYMENTS} from './paymentConstants';
+import {MAKE_PAYMENT, LISTEN_PAYMENTS, LISTEN_PAYMENTS_STUDENT} from './paymentConstants';
 
 export const makePayment = (payment) => {
     return {
@@ -10,6 +10,13 @@ export const makePayment = (payment) => {
 export const listenToPayments = (payments) => {
     return {
         type: LISTEN_PAYMENTS,
+        payload: payments
+    }
+}
+
+export const listenToPaymentsStudent = (payments) => {
+    return {
+        type: LISTEN_PAYMENTS_STUDENT,
         payload: payments
     }
 }

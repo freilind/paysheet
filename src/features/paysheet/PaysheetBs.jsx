@@ -5,7 +5,9 @@ import { Table } from 'semantic-ui-react';
 import {getMonthName, monthsCuote, monthsTitle} from '../../app/common/constants';
 
 const PaysheetBs = ({students}) => {
-    const {payments} = useSelector(state => state.payment);
+    let pays;
+    const {payments, paymentsStudent} = useSelector(state => state.payment);
+    students.length === 1 ? pays = paymentsStudent : pays = payments
     const styleMoroso = {'backgroundColor' : '#F8D8DF'};
     const styleSolvente = {'backgroundColor' : '#D3F8D7'};
     const regexMiles = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
@@ -19,24 +21,34 @@ const PaysheetBs = ({students}) => {
 
     const calcPayments = (student) => {
         let totalStudentMonths = {};
+        let totalStudentMonthsDollar = {};
         monthsCuote.forEach(m => (totalStudentMonths = {...totalStudentMonths,[m.month]: 0}));
-        const payInd = payments.filter(p => p.studentId === student.id).sort((a, b) => a.date <= b.date);
+        monthsCuote.forEach(m => (totalStudentMonthsDollar = {...totalStudentMonthsDollar,[m.month]: 0}));
+        const payInd = pays.filter(p => p.studentId === student.id).sort((a, b) => a.date >= b.date);
         payInd.forEach(p => {
             let feePay = parseFloat(p.mount * p.rate);
+            let feePayDollar = parseFloat(p.mount);
             monthsCuote.some(m => {
                 const accStudent = totalStudentMonths[m.month];
+                const accStudentDollar = totalStudentMonthsDollar[m.month];
                 const sum = accStudent + feePay;
-                if(sum <= (m.cuote * p.rate)) {
+                const sumDollar = accStudentDollar + feePayDollar;
+                if(sumDollar <= m.cuote) {
                     totalStudentMonths[m.month] = sum;
+                    totalStudentMonthsDollar[m.month] = sumDollar;
                     totalMonths[m.month] = totalMonths[m.month] + feePay;
                     feePay -= feePay;
+                    feePayDollar -= feePayDollar;
                 }else {
-                    let resto = (m.cuote * p.rate) - accStudent;
-                    totalStudentMonths[m.month] = accStudent + resto;
+                    let restoDollar = m.cuote - accStudentDollar;
+                    let resto = (restoDollar * p.rate);
+                    totalStudentMonths[m.month] += resto;
+                    totalStudentMonthsDollar[m.month] = accStudentDollar + restoDollar;
                     totalMonths[m.month] = totalMonths[m.month] + resto;
                     feePay -= resto;
+                    feePayDollar -= restoDollar;
                 }
-                return feePay === 0;
+                return feePayDollar === 0;
             });
         });
         return totalStudentMonths;
@@ -45,7 +57,7 @@ const PaysheetBs = ({students}) => {
     const calcDelayed = (student) => {
         let delayedMonths = {};
         monthsCuote.forEach(m => (delayedMonths = {...delayedMonths,[m.month]: 0}));
-        const payInd = payments.filter(p => p.studentId === student.id).sort((a, b) => a.date <= b.date);
+        const payInd = pays.filter(p => p.studentId === student.id).sort((a, b) => a.date <= b.date);
         payInd.forEach(p => {
             let feePay = parseFloat(p.mount);
             monthsCuote.some(m => {

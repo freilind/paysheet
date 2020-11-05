@@ -4,9 +4,19 @@ import { Tab } from 'semantic-ui-react';
 import PaysheetBs from './PaysheetBs';
 import PaysheetUs from './PaysheetUs';
 import LoadingComponent from '../../app/layout/LoadingComponent';
+import useFirestoreCollection from '../../app/hooks/useFirestoreCollection';
+import { listenToPaymentsStudent } from '../payment/paymentActions';
+import { getPaymentStudent } from '../../app/services/firestoreService';
 
 const PaysheetStudent = ({student}) => {
+    const dispatch = useDispatch();
     const {loading} = useSelector(state => state.async);
+
+    useFirestoreCollection({
+        query: () => getPaymentStudent(student.id),
+        data: payments => dispatch(listenToPaymentsStudent(payments)),
+        dependency: [student.id, dispatch]
+    });
 
     const arr= [];
     arr.push(student);

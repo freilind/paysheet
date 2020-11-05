@@ -1,8 +1,9 @@
-import { MAKE_PAYMENT, LISTEN_PAYMENTS } from './paymentConstants';
+import { MAKE_PAYMENT, LISTEN_PAYMENTS, LISTEN_PAYMENTS_STUDENT } from './paymentConstants';
 
 const initialState = {
     payment: null,
-    payments: []
+    payments: [],
+    paymentsStudent: []
 }
 
 const paymentReducer = (state = initialState, {type, payload}) => {
@@ -16,6 +17,11 @@ const paymentReducer = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 payments: payload
+            }
+        case LISTEN_PAYMENTS_STUDENT:
+            return {
+                ...state,
+                paymentsStudent: payload
             }
         default: 
             return state;

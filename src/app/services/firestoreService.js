@@ -88,3 +88,7 @@ export const addPayment = async (student, payment, rate) => {
 export const getPaymentClassroom = (classroom) => {
     return db.collection('payments').where('classroom', '==', classroom);
 };
+
+export const getPaymentStudent = (studentId) => {
+    return db.collection('payments').where('studentId', '==', studentId);
+};
